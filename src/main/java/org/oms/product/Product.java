@@ -1,4 +1,4 @@
-package org.example.oms.model;
+package org.oms.product;
 
 public class Product {
     private int productId;

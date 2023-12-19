@@ -1,4 +1,4 @@
-package org.example.oms.model;
+package org.oms.order;
 
 import java.util.Date;
 

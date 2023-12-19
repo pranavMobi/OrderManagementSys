@@ -1,4 +1,4 @@
-package org.example.oms.dao;
+package org.oms.order;
 
 public class OrderRepository {
 }
