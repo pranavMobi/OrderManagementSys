@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerRepository {
-    private static final String GetCustomerById = "SELECT * FROM online_customer WHERE  CUSTOMER_ID = ?";
-    private static final String GetAllCustomers = "SELECT * FROM online_customer";
-    private static final String InsertCustomer = "INSERT INTO online_customer VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String UpdateCustomer = "UPDATE online_customer SET " +
+
+    //variable name should be noun smaller case
+    private static final String customerByIdQuery = "SELECT * FROM online_customer WHERE  CUSTOMER_ID = ?";
+    private static final String allCustomersQuery = "SELECT * FROM online_customer";
+    private static final String addCustomerQuery = "INSERT INTO online_customer VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String updateCustomerQuery = "UPDATE online_customer SET " +
             "CUSTOMER_FNAME=?, CUSTOMER_LNAME=?, CUSTOMER_EMAIL=?, CUSTOMER_PHONE=?, " +
             "ADDRESS_ID=?, CUSTOMER_CREATION_DATE=?, CUSTOMER_USERNAME=?, CUSTOMER_GENDER=? " +
             "WHERE CUSTOMER_ID=?";
@@ -18,7 +20,7 @@ public class CustomerRepository {
 
     public Customer getCustomerById(int customerId) {
         try (Connection connection = DatabaseConnectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(GetCustomerById)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(customerByIdQuery)) {
 
             preparedStatement.setInt(1, customerId);
 
@@ -42,7 +44,7 @@ public class CustomerRepository {
 
         try (Connection connection = DatabaseConnectionManager.getConnection();
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(GetAllCustomers)) {
+             ResultSet resultSet = statement.executeQuery(allCustomersQuery)) {
 
             while (resultSet.next()) {
                 customers.add(mapResultSetToCustomer(resultSet));
@@ -52,18 +54,6 @@ public class CustomerRepository {
         }
 
         return customers;
-    }
-
-    public void addCustomer(Customer customer) {
-        try (Connection connection = DatabaseConnectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(InsertCustomer)) {
-
-            setCustomerValuesInPreparedStatement(preparedStatement, customer);
-
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            handleSQLException(e);
-        }
     }
     public void deleteCustomer(int customerId) {
         try (Connection connection = DatabaseConnectionManager.getConnection();
@@ -76,9 +66,21 @@ public class CustomerRepository {
             handleSQLException(e);
         }
     }
+    public void addCustomer(Customer customer) {
+        try (Connection connection = DatabaseConnectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(addCustomerQuery)) {
+
+            setCustomerValuesInPreparedStatement(preparedStatement, customer);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            handleSQLException(e);
+        }
+    }
+
     public void updateCustomer(Customer customer) {
         try (Connection connection = DatabaseConnectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UpdateCustomer)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(updateCustomerQuery)) {
 
             setCustomerValuesInPreparedStatement(preparedStatement, customer);
             preparedStatement.setInt(9, customer.getCustomerId());
@@ -88,7 +90,7 @@ public class CustomerRepository {
             handleSQLException(e);
         }
     }
-
+//alternative to updating coulmn name
     private void setCustomerValuesInPreparedStatement(PreparedStatement preparedStatement, Customer customer)
             throws SQLException {
         preparedStatement.setInt(1, customer.getCustomerId());
@@ -105,15 +107,15 @@ public class CustomerRepository {
     private Customer mapResultSetToCustomer(ResultSet resultSet) throws SQLException {
         // Map the result set to a Customer object
         return new Customer(
-                resultSet.getInt("customerId"),
-                resultSet.getString("customerFirstName"),
-                resultSet.getString("customerLastName"),
-                resultSet.getString("customerEmail"),
-                resultSet.getLong("customerPhone"),
-                resultSet.getInt("addressId"),
-                resultSet.getDate("customerCreationDate"),
-                resultSet.getString("customerUsername"),
-                resultSet.getString("customerGender").charAt(0)
+                resultSet.getInt("CUSTOMER_ID"),
+                resultSet.getString("CUSTOMER_FNAME"),
+                resultSet.getString("CUSTOMER_LNAME"),
+                resultSet.getString("CUSTOMER_EMAIL"),
+                resultSet.getLong("CUSTOMER_PHONE"),
+                resultSet.getInt("ADDRESS_ID"),
+                resultSet.getDate("CUSTOMER_CREATION_DATE"),
+                resultSet.getString("CUSTOMER_USERNAME"),
+                resultSet.getString("CUSTOMER_GENDER").charAt(0)
         );
     }
 

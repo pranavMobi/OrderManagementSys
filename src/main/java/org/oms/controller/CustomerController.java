@@ -1,33 +1,47 @@
 package org.oms.controller;
+
 import org.oms.customer.Customer;
 import org.oms.customer.CustomerService;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 
 import java.util.List;
 
-public class CustomerController {
+@Path("/oms/api/v1/customers")
+public class CustomerController
+{
+
     private final CustomerService customerService = new CustomerService();
 
-
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     public List<Customer> getAllCustomers() {
         return customerService.getAllCustomers();
     }
 
-    public Customer getCustomerById(int customerId) {
+    @GET
+    @Path("/{customerId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Customer getCustomerById(@PathParam("customerId") int customerId) {
         return customerService.getCustomerById(customerId);
     }
 
-
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     public void addCustomer(Customer customer) {
         customerService.addCustomer(customer);
     }
 
-
-    public void updateCustomer(int customerId, Customer updatedCustomer) {
+    @PUT
+    @Path("/{customerId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void updateCustomer(@PathParam("customerId") int customerId, Customer updatedCustomer) {
         customerService.updateCustomer(customerId, updatedCustomer);
     }
 
-    public void deleteCustomer(int customerId) {
+    @DELETE
+    @Path("/{customerId}")
+    public void deleteCustomer(@PathParam("customerId") int customerId) {
         customerService.deleteCustomer(customerId);
     }
 }
-

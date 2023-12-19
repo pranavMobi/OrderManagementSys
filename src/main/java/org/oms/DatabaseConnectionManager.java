@@ -5,20 +5,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnectionManager {
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/orders";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "Pranavroot123";
+    private static final String jdbcUrl = "jdbc:mysql://localhost:3306/orders";
+    private static final String username = "root";
+    private static final String password = "Pranavroot123";
 
-    static {
+    public static Connection getConnection() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error loading JDBC driver");
+            return DriverManager.getConnection(jdbcUrl, username, password);
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle or log the exception as needed
+            throw new RuntimeException("Error getting database connection", e);
         }
-    }
-
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
     }
 }
