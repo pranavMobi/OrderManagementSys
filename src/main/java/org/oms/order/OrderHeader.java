@@ -3,26 +3,27 @@ package org.oms.order;
 import java.util.Date;
 
 public class OrderHeader {
-    private int orderId;
-    private int customerId;
-    private Date orderDate;
-    private String orderStatus;
-    private String paymentMode;
-    private Date paymentDate;
-    private Date orderShipmentDate;
-    private int shipperId;
+        private static OrderHeader instance;
 
-    public OrderHeader(int orderId, int customerId, Date orderDate, String orderStatus, String paymentMode, Date paymentDate, Date orderShipmentDate, int shipperId) {
-        this.orderId = orderId;
-        this.customerId = customerId;
-        this.orderDate = orderDate;
-        this.orderStatus = orderStatus;
-        this.paymentMode = paymentMode;
-        this.paymentDate = paymentDate;
-        this.orderShipmentDate = orderShipmentDate;
-        this.shipperId = shipperId;
-    }
+        private int orderId;
+        private int customerId;
+        private Date orderDate;
+        private String orderStatus;
+        private String paymentMode;
+        private Date paymentDate;
+        private Date orderShipmentDate;
+        private int shipperId;
 
+        private OrderHeader() {
+            // private constructor to prevent instantiation
+        }
+
+        public static OrderHeader getInstance() {
+            if (instance == null) {
+                instance = new OrderHeader();
+            }
+            return instance;
+        }
     public int getOrderId() {
         return orderId;
     }
