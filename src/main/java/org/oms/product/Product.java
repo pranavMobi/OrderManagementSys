@@ -11,6 +11,18 @@ public class Product {
     private int height;
     private Double weight;
 
+    public Product(int productId, String productDescription, int productClassCode, Double productPrice, int productQuantityAvailable, int length, int width, int height, Double weight) {
+        this.productId = productId;
+        this.productDescription = productDescription;
+        this.productClassCode = productClassCode;
+        this.productPrice = productPrice;
+        this.productQuantityAvailable = productQuantityAvailable;
+        this.length = length;
+        this.width = width;
+        this.height = height;
+        this.weight = weight;
+    }
+
     public int getProductId() {
         return productId;
     }
